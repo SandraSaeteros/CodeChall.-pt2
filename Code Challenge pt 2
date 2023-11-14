@@ -1,0 +1,59 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class MovingPlayer : MonoBehaviour
+{
+    //max speed of how the player is going to move
+    float playerSpeed = 7f;
+    //declaring position value
+    float yValue;
+    //hight for jumping like at what point the player will reach when jumping
+    float jumpHeight = 8f;
+    //Rigidbody component of  the player for applying physics.
+    Rigidbody playerRB;
+
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //iniciate the vertical position value
+        SetValueY();
+
+        //Get the Rigidbody attached to the player Gameobject
+        playerRB = GetComponent<Rigidbody>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        PlayerMovement();
+    //giving the order to jump and what forces to implement when executing
+        {
+            if (Input.GetButtonDown("Jump"))
+            //making sure it's set with rigidbody so when executed it follows physics making it look more smooth
+            {
+                playerRB.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
+
+            }
+        }
+    }
+   //Initialize the vertical position value to 0
+    void SetValueY()
+    {
+
+        yValue = 0f;
+
+    }
+    //Handle the playe's movement based on the user input
+    void PlayerMovement()
+    {
+        //the movement of the object will be abjusted for frame rate and multiplied by the player speed to controlt the speed of the gameobject
+        float xValue = Input.GetAxis("Horizontal") * Time.deltaTime * playerSpeed;
+        float zValue = Input.GetAxis("Vertical") * Time.deltaTime * playerSpeed;
+        //Translate the player GameObject based on the calculated movement values.
+        transform.Translate(xValue, yValue, zValue);
+
+    }
+}
